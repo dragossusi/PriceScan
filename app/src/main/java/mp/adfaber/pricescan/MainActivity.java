@@ -84,14 +84,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes =  detections.getDetectedItems();
-                if(barcodes.size() > 0){
-                    cameraSource.stop();
+                if(barcodes.size() > 0) {
                     intent = new Intent(MainActivity.this,ListActivity.class);
                     intent.putExtra("cod",barcodes.valueAt(0).displayValue);
                     startActivity(intent);
-                    finish();
+                    barcode.release();
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        barcode = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.ALL_FORMATS)
+                .build();
     }
 }

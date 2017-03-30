@@ -20,7 +20,7 @@ public class ProdusAPI {
         gson = new Gson();
     }
 
-    public DetaliiProdus searchProduct(long barcode) throws IOException {
+    public DetaliiProdus searchProduct(String barcode) throws IOException {
         return gson.fromJson(readUrl(APIHOST + barcode),DetaliiProdus.class);
     }
 
