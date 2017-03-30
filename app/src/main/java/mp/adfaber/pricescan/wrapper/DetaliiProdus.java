@@ -7,13 +7,13 @@ import java.util.List;
  */
 
 public class DetaliiProdus {
-    String name;
-    String image_path;
-    List<Magazin> results;
+    public String name;
+    public String image_path;
+    public List<Magazin> results;
 
     public class Magazin {
-        float pret;
-        String magazin;
-        String image_path;
+        public float pret;
+        public String magazin;
+        public String image_path;
     }
 }

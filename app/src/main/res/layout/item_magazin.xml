@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_magazin"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:paddingRight="8dp"
+        android:paddingEnd="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/profi" />
+
+    <TextView
+        android:id="@+id/tv_firma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/img_magazin"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
+        android:text="Firma"
+        android:textAlignment="center"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tv_pret"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|end"
+        android:text="Pret"
+        android:paddingBottom="4dp"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:layout_below="@+id/tv_firma"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/tv_diferenta"
+        android:layout_toRightOf="@+id/tv_diferenta"
+        android:layout_toEndOf="@+id/tv_diferenta" />
+
+    <TextView
+        android:id="@+id/tv_diferenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/img_magazin"
+        android:layout_below="@+id/tv_firma"
+        android:layout_toEndOf="@+id/img_magazin"
+        android:layout_toRightOf="@+id/img_magazin"
+        android:text="Mai ieftin"
+        android:gravity="center"
+        android:padding="6dp"
+        android:textColor="@android:color/holo_red_dark" />
+</RelativeLayout>
