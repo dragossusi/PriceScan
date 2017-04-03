@@ -8,6 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     public static final int PERMISSION_REQUEST = 200;
+    boolean gasit=false;
     SurfaceView cameraView;
     BarcodeDetector barcode;
     CameraSource cameraSource;
@@ -84,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes =  detections.getDetectedItems();
-                if(barcodes.size() > 0) {
+                if(barcodes.size() > 0 && !gasit) {
+                    gasit=true;
                     intent = new Intent(MainActivity.this,ListActivity.class);
                     intent.putExtra("cod",barcodes.valueAt(0).displayValue);
                     startActivity(intent);
@@ -95,10 +99,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.action_add) {
+            intent = new Intent(this,AddProductActivity.class);
+            startActivity(intent);
+            gasit=true;
+            barcode.release();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         barcode = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
+        gasit=false;
     }
 }

@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class ProdusAPI {
     //TODO modifica asta cand ai host
-    private static final String APIHOST = "http://92.83.99.68:4567/search/nume=";
+    private static final String APIHOST = "http://109.97.237.38:4567/search/";
 
     Gson gson;
     public ProdusAPI() {

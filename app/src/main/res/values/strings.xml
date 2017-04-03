@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Price Scan</string>
+    <string name="action_add">Adăugare produs</string>
 </resources>

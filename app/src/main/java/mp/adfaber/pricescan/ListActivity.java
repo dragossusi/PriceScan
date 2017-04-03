@@ -49,6 +49,7 @@ public class ListActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             if(succes) {
                 listView.setAdapter(new ListaMagazineAdapter(ListActivity.this,detaliiProdus.results));
+                tv.setText(detaliiProdus.name);
                 System.out.println("detalii"+detaliiProdus.name);
             } else {
                 Toast.makeText(ListActivity.this,"Nu merge bo$$",Toast.LENGTH_LONG);

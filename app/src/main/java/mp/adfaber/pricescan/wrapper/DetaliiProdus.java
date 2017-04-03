@@ -15,5 +15,6 @@ public class DetaliiProdus {
         public float pret;
         public String magazin;
         public String image_path;
+        public String oras;
     }
 }
