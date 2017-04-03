@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.koushikdutta.ion.Ion;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -37,8 +40,16 @@ public class ListaMagazineAdapter extends ArrayAdapter<DetaliiProdus.Magazin> {
         TextView tv_nume = (TextView) convertView.findViewById(R.id.tv_firma);
         TextView tv_pret = (TextView) convertView.findViewById(R.id.tv_pret);
         TextView tv_diferenta = (TextView) convertView.findViewById(R.id.tv_diferenta);
+        ImageView img = (ImageView) convertView.findViewById(R.id.img_magazin);
+
         tv_nume.setText(getItem(position).magazin);
         tv_pret.setText(df.format(getItem(position).pret));
+
+        Ion.with(img)
+                .placeholder(R.drawable.blank)
+                .error(R.drawable.blank)
+                .load("http://titumaiorescu.comli.com/");
+
         if(position!=0)
             tv_diferenta.setText(df.format(getItem(position).pret-main));
         else
