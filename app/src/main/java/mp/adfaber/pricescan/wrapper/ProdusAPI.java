@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class ProdusAPI {
     //TODO modifica asta cand ai host
-    private static final String APIHOST = "http://109.97.237.38:4567/search/";
+    private static final String APIHOST = "http://109.97.237.38:4567/";
 
     Gson gson;
     public ProdusAPI() {
@@ -21,7 +21,13 @@ public class ProdusAPI {
     }
 
     public DetaliiProdus searchProduct(String barcode) throws IOException {
-        return gson.fromJson(readUrl(APIHOST + barcode),DetaliiProdus.class);
+        return gson.fromJson(readUrl(APIHOST + "search/" + barcode),DetaliiProdus.class);
+    }
+
+    public Result postProduct(String barcode, String oras, String magazin,float pret) throws IOException {
+        return gson.fromJson(readUrl(APIHOST + "post/?cod=" +barcode
+                + "&oras=" + oras + "&magazin=" + magazin + "&pret=" + pret),
+                Result.class);
     }
 
     private String readUrl(String urlString) throws IOException {
@@ -41,5 +47,9 @@ public class ProdusAPI {
             if (reader != null)
                 reader.close();
         }
+    }
+    public class Result {
+        public boolean succes;
+        public String description;
     }
 }

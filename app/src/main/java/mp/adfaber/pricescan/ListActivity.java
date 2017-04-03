@@ -52,7 +52,7 @@ public class ListActivity extends AppCompatActivity {
                 tv.setText(detaliiProdus.name);
                 System.out.println("detalii"+detaliiProdus.name);
             } else {
-                Toast.makeText(ListActivity.this,"Nu merge bo$$",Toast.LENGTH_LONG);
+                Toast.makeText(ListActivity.this,"Nu merge bo$$",Toast.LENGTH_LONG).show();
             }
         }
     }
