@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ProdusAPI {
     //TODO modifica asta cand ai host
-    private static final String APIHOST = "http://79.116.141.207:4567/";
+    private static final String APIHOST = "http://79.118.201.219:4567/";
     private static final Type listtring = new TypeToken<List<String>>() {
     }.getType();
     Gson gson;
@@ -62,35 +62,37 @@ public class ProdusAPI {
     }
 
     public Result postProduct(String oras, String firma, String strada, String barcode, String pret) throws IOException {
+        System.out.println(pret);
         Result resFirma = getFirmaId(firma);
         if (resFirma.succes) {
-            Result resMagazin = getMagazinId(resFirma.description, oras, strada);
+            Result resMagazin = getMagazinId(resFirma.val, oras, strada);
             if (resMagazin.succes)
-                return gson.fromJson(readUrl(APIHOST + "insert/stocare/" + resMagazin.description + "/" + barcode + "/" + pret),
+                return gson.fromJson(readUrl(APIHOST + "insert/stocare/" + resMagazin.val + "/" + barcode + "/" + pret),
                         Result.class);
             else {
-                resMagazin.description = "nu exista magazin";
+                resMagazin.val = "nu exista magazin";
                 return resMagazin;
             }
         } else {
-            resFirma.description = "nu exista firma";
+            resFirma.val = "nu exista firma";
             return resFirma;
         }
     }
 
     public Result postProduct(String oras, String firma, String barcode, String pret) throws IOException {
+        System.out.println(pret);
         Result resFirma = getFirmaId(firma);
         if (resFirma.succes) {
-            Result resMagazin = getMagazinId(resFirma.description, oras);
+            Result resMagazin = getMagazinId(resFirma.val, oras);
             if (resMagazin.succes)
-                return gson.fromJson(readUrl(APIHOST + "insert/stocare/" + resMagazin.description + "/" + barcode + "/" + pret),
+                return gson.fromJson(readUrl(APIHOST + "insert/stocare/" + resMagazin.val + "/" + barcode + "/" + pret),
                         Result.class);
             else {
-                resMagazin.description = "nu exista magazin";
+                resMagazin.val = "nu exista magazin";
                 return resMagazin;
             }
         } else {
-            resFirma.description = "nu exista firma";
+            resFirma.val = "nu exista firma";
             return resFirma;
         }
     }
@@ -117,7 +119,7 @@ public class ProdusAPI {
 
     public class Result {
         public boolean succes;
-        public String description;
+        public String val;
 
         public Result(boolean succes) {
             this.succes = succes;

@@ -13,8 +13,9 @@ public class DetaliiProdus {
 
     public class Magazin {
         public float pret;
-        public String magazin;
+        public String firma;
         public String image_path;
         public String oras;
+        public String strada;
     }
 }

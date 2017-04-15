@@ -42,7 +42,7 @@ public class ListaMagazineAdapter extends ArrayAdapter<DetaliiProdus.Magazin> {
         TextView tv_diferenta = (TextView) convertView.findViewById(R.id.tv_diferenta);
         ImageView img = (ImageView) convertView.findViewById(R.id.img_magazin);
 
-        tv_nume.setText(getItem(position).magazin);
+        tv_nume.setText(getItem(position).firma + "\n"+ getItem(position).oras);
         tv_pret.setText(df.format(getItem(position).pret));
 
         Ion.with(img)

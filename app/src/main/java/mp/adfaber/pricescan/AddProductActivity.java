@@ -38,6 +38,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         editCodBare = (EditText) findViewById(R.id.editCod);
         editPret = (EditText) findViewById(R.id.editPret);
+
         spinnerOras = (Spinner) findViewById(R.id.spinner_oras);
         spinnerMagazin = (Spinner) findViewById(R.id.spinner_magazin);
         spinnerStrada = (Spinner) findViewById(R.id.spinner_strada);
@@ -53,10 +54,12 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    new PostProduct(spinnerStrada.getVisibility()).execute(new Produs(
+                    new PostProduct(spinnerStrada.getVisibility())
+                            .execute(new Produs(
                                     editCodBare.getText().toString(),
                                     spinnerOras.getSelectedItem().toString(),
                                     spinnerMagazin.getSelectedItem().toString(),
+                                    spinnerStrada.getSelectedItem().toString(),
                                     editPret.getText().toString())
                             , null, null);
                 }catch (Exception e) {
@@ -152,7 +155,6 @@ public class AddProductActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             try {
                 orase = api.getOrase();
-                System.out.println(orase.get(0));
                 success=true;
             }catch (Exception e) {
                 e.printStackTrace();
@@ -185,6 +187,7 @@ public class AddProductActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Produs... products) {
             try {
+                System.out.println(products[0].strada);
                 if(arestrada)
                     result = api.postProduct(products[0].oras,products[0].firma,products[0].strada,products[0].barcode,products[0].pret);
                 else
@@ -201,17 +204,18 @@ public class AddProductActivity extends AppCompatActivity {
             if(succes && result.succes) {
                 Toast.makeText(AddProductActivity.this,"S-a adaugat in baza de date",Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(AddProductActivity.this,"Nu s-a adaugat bo$$\n"+result.description,Toast.LENGTH_LONG).show();
+                Toast.makeText(AddProductActivity.this,"Nu s-a adaugat bo$$\n"+result.val,Toast.LENGTH_LONG).show();
             }
         }
     }
 
 
     protected class Produs {
-        public Produs(String barcode, String oras, String firma, String pret) {
+        public Produs(String barcode, String oras, String firma, String strada, String pret) {
             this.barcode = barcode;
             this.firma = firma;
             this.oras = oras;
+            this.strada = strada;
             this.pret = pret;
         }
 
