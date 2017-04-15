@@ -28,7 +28,7 @@ public class ListaMagazineAdapter extends ArrayAdapter<DetaliiProdus.Magazin> {
     public ListaMagazineAdapter(Context context, List<DetaliiProdus.Magazin> list) {
         super(context, 0, list);
         main = list.get(0).pret;
-        df = new DecimalFormat("#.00");
+        df = new DecimalFormat("#0.00");
     }
 
     @NonNull
@@ -48,7 +48,7 @@ public class ListaMagazineAdapter extends ArrayAdapter<DetaliiProdus.Magazin> {
         Ion.with(img)
                 .placeholder(R.drawable.blank)
                 .error(R.drawable.blank)
-                .load("http://titumaiorescu.comli.com/");
+                .load("http://titumaiorescu.comli.com/magazin/"+getItem(position).image_path);
 
         if(position!=0)
             tv_diferenta.setText(df.format(getItem(position).pret-main));

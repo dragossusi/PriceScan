@@ -3,9 +3,13 @@ package mp.adfaber.pricescan;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.koushikdutta.ion.Ion;
 
 import java.io.IOException;
 
@@ -16,6 +20,7 @@ import mp.adfaber.pricescan.wrapper.ProdusAPI;
 public class ListActivity extends AppCompatActivity {
     String cod;
     TextView tv;
+    ImageView imageView;
     ListView listView;
     ProdusAPI api;
     DetaliiProdus detaliiProdus;
@@ -27,6 +32,7 @@ public class ListActivity extends AppCompatActivity {
         cod = getIntent().getStringExtra("cod");
         tv = (TextView)findViewById(R.id.textView);
         listView = (ListView)findViewById(R.id.list_magazine);
+        imageView = (ImageView)findViewById(R.id.iv_product);
         tv.setText(cod);
         api = new ProdusAPI();
         new GetDetalii().execute(null,null,null);
@@ -48,8 +54,16 @@ public class ListActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if(succes) {
-                listView.setAdapter(new ListaMagazineAdapter(ListActivity.this,detaliiProdus.results));
+                if(detaliiProdus.results.size()!=0)
+                    listView.setAdapter(new ListaMagazineAdapter(ListActivity.this,detaliiProdus.results));
                 tv.setText(detaliiProdus.name);
+                if(detaliiProdus.image_path!=null) {
+                    imageView.setVisibility(View.VISIBLE);
+                    Ion.with(imageView)
+                            .placeholder(R.drawable.blank)
+                            .error(R.drawable.blank)
+                            .load("http://titumaiorescu.comli.com/produs/"+detaliiProdus.image_path);
+                }
                 System.out.println("detalii"+detaliiProdus.name);
             } else {
                 Toast.makeText(ListActivity.this,"Nu merge bo$$",Toast.LENGTH_LONG).show();

@@ -28,13 +28,12 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:text="Cod Produs"
-                android:textSize="24dp" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/editCod"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:ems="10"
                 android:inputType="number" />
         </LinearLayout>
@@ -53,7 +52,7 @@
                 android:layout_alignParentTop="true"
                 android:padding="8dp"
                 android:text="Oras"
-                android:textSize="24dp" />
+                android:textSize="20dp" />
 
             <Spinner
                 android:id="@+id/spinner_oras"
@@ -76,10 +75,35 @@
                 android:layout_alignParentTop="true"
                 android:padding="8dp"
                 android:text="Magazin"
-                android:textSize="24dp" />
+                android:textSize="20dp" />
 
             <Spinner
                 android:id="@+id/spinner_magazin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1.00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearstrada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textview6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:padding="8dp"
+                android:text="Strada"
+                android:textSize="20dp" />
+
+            <Spinner
+                android:id="@+id/spinner_strada"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1.00" />
@@ -99,7 +123,7 @@
                 android:layout_alignParentTop="true"
                 android:padding="8dp"
                 android:text="Pret"
-                android:textSize="24dp" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/editPret"
