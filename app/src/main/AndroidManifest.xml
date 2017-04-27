@@ -21,8 +21,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +33,10 @@
         <activity android:name=".ScanActivity" />
         <activity
             android:name=".ListActivity"
-            android:label="Produs" />
-        <activity android:name=".AddProductActivity" />
+            android:label="Preturi produs" />
+        <activity android:name=".AddProductActivity"
+            android:label="Adaugare produs"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
