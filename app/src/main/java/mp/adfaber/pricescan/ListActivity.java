@@ -3,9 +3,11 @@ package mp.adfaber.pricescan;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,10 +26,16 @@ public class ListActivity extends AppCompatActivity {
     ListView listView;
     ProdusAPI api;
     DetaliiProdus detaliiProdus;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.list_toolbar);
+        progressBar = (ProgressBar) findViewById(R.id.toolbar_progress_bar);
+        setSupportActionBar(myToolbar);
+
         System.out.println("s-a creat");
         cod = getIntent().getStringExtra("cod");
         tv = (TextView)findViewById(R.id.textView);
@@ -39,6 +47,12 @@ public class ListActivity extends AppCompatActivity {
     }
     protected class GetDetalii extends AsyncTask<Void,Void,Void> {
         boolean succes = false;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected Void doInBackground(Void... voids) {
             try {
@@ -52,21 +66,25 @@ public class ListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+            progressBar.setVisibility(View.GONE);
             if(succes) {
-                if(detaliiProdus.results.size()!=0)
-                    listView.setAdapter(new ListaMagazineAdapter(ListActivity.this,detaliiProdus.results));
-                tv.setText(detaliiProdus.name);
-                if(detaliiProdus.image_path!=null) {
-                    imageView.setVisibility(View.VISIBLE);
-                    Ion.with(imageView)
-                            .placeholder(R.drawable.blank)
-                            .error(R.drawable.blank)
-                            .load("http://titumaiorescu.comli.com/produs/"+detaliiProdus.image_path);
+                if(detaliiProdus.succes) {
+                    if (detaliiProdus.results.size() != 0)
+                        listView.setAdapter(new ListaMagazineAdapter(ListActivity.this, detaliiProdus.results));
+                    tv.setText(detaliiProdus.name);
+                    if (detaliiProdus.image_path != null) {
+                        imageView.setVisibility(View.VISIBLE);
+                        Ion.with(imageView)
+                                .placeholder(R.drawable.blank)
+                                .error(R.drawable.blank)
+                                .load("http://titumaiorescu.comli.com/produs/" + detaliiProdus.image_path);
+                    }
+                    System.out.println("detalii" + detaliiProdus.name);
+                } else {
+                    Toast.makeText(ListActivity.this,"Nu exista produsul",Toast.LENGTH_LONG).show();
                 }
-                System.out.println("detalii"+detaliiProdus.name);
             } else {
-                Toast.makeText(ListActivity.this,"Nu merge bo$$",Toast.LENGTH_LONG).show();
+                Toast.makeText(ListActivity.this,"Nu s-a putut conecta la server",Toast.LENGTH_LONG).show();
             }
         }
     }

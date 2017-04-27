@@ -21,33 +21,21 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imagine_produs"
+            android:id="@+id/imagine_firma"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:src="@drawable/blank" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/nume_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="Cautand pe Alaska"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="18dp" />
 
-            <TextView
-                android:id="@+id/nume_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cautand pe Alaska"
-                android:textColor="@android:color/holo_blue_dark" />
-
-            <TextView
-                android:id="@+id/categorie_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="Carti"
-                android:textColor="@android:color/holo_blue_dark" />
-
-        </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

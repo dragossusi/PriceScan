@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public class DetaliiProdus {
+    public boolean succes;
     public String name;
     public String image_path;
     public List<Magazin> results;

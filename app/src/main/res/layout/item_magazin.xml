@@ -9,10 +9,7 @@
         android:id="@+id/img_magazin"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:paddingEnd="2dp"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
-        android:paddingStart="2dp"
+        android:padding="2dp"
         app:srcCompat="@drawable/blank" />
 
     <LinearLayout
