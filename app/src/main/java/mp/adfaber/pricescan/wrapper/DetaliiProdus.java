@@ -12,10 +12,11 @@ public class DetaliiProdus {
     public List<Magazin> results;
 
     public class Magazin {
-        public float pret;
-        public String firma;
-        public String image_path;
+        public String id_magazin;
         public String oras;
+        public String firma;
         public String strada;
+        public String image_path;
+        public float pret;
     }
 }

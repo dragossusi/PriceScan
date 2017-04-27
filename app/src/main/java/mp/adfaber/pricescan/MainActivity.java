@@ -1,127 +1,123 @@
 package mp.adfaber.pricescan;
 
-import android.Manifest;
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
+import mp.adfaber.pricescan.fragmente.DetaliiFragment;
+import mp.adfaber.pricescan.fragmente.FirmeFragment;
+import mp.adfaber.pricescan.fragmente.MagazineFragment;
+import mp.adfaber.pricescan.fragmente.ProduseFragment;
 
-import java.io.IOException;
-
-public class MainActivity extends AppCompatActivity {
-    public static final int PERMISSION_REQUEST = 200;
-    boolean gasit=false;
-    SurfaceView cameraView;
-    BarcodeDetector barcode;
-    CameraSource cameraSource;
-    SurfaceHolder holder;
-    Intent intent;
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+    private static final int SCAN_RESULT = 1;
+    FragmentManager fm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        ///permisiune
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST);
-        }
-
-        cameraView = (SurfaceView) findViewById(R.id.surfaceView1);
-        cameraView.setZOrderMediaOverlay(true);
-        holder = cameraView.getHolder();
-        barcode = new BarcodeDetector.Builder(this)
-                .setBarcodeFormats(Barcode.ALL_FORMATS)
-                .build();
-        if(!barcode.isOperational()){
-            Toast.makeText(getApplicationContext(), "Sorry, Couldn't setup the detector", Toast.LENGTH_LONG).show();
-            this.finish();
-        }
-        cameraSource = new CameraSource.Builder(this, barcode)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedFps(24)
-                .setAutoFocusEnabled(true)
-                .setRequestedPreviewSize(1920,1024)
-                .build();
-        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                try{
-                    if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-                        cameraSource.start(cameraView.getHolder());
-                    }
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraSource.stop();
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                startActivityForResult(intent, SCAN_RESULT);
             }
         });
-        barcode.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
 
-            }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes =  detections.getDetectedItems();
-                if(barcodes.size() > 0 && !gasit) {
-                    gasit=true;
-                    intent = new Intent(MainActivity.this,ListActivity.class);
-                    intent.putExtra("cod",barcodes.valueAt(0).displayValue);
-                    startActivity(intent);
-                    barcode.release();
-                }
-            }
-        });
+        fm = getFragmentManager();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if(id==R.id.action_add) {
-            intent = new Intent(this,AddProductActivity.class);
-            startActivity(intent);
-            gasit=true;
-            barcode.release();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    protected void onResume() {
-        super.onResume();
-        barcode = new BarcodeDetector.Builder(this)
-                .setBarcodeFormats(Barcode.ALL_FORMATS)
-                .build();
-        gasit=false;
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_produse) {
+            // Handle the camera action
+            fm.beginTransaction().replace(R.id.content_main, new ProduseFragment()).commit();
+        } else if (id == R.id.nav_firme) {
+            fm.beginTransaction().replace(R.id.content_main, new FirmeFragment()).commit();
+        } else if (id == R.id.nav_magazine) {
+            fm.beginTransaction().replace(R.id.content_main, new MagazineFragment()).commit();
+        } else if (id == R.id.nav_detalii) {
+            fm.beginTransaction().replace(R.id.content_main, new DetaliiFragment()).commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SCAN_RESULT) {
+            if(resultCode == Activity.RESULT_OK){
+                Intent intent = new Intent(MainActivity.this,ListActivity.class);
+                intent.putExtra("cod",data.getStringExtra("cod"));
+                startActivity(intent);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "Nu merge scannerul", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

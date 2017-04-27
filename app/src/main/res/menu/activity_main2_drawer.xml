@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_produse"
+            android:title="Produse" />
+        <item
+            android:id="@+id/nav_magazine"
+            android:title="Magazine" />
+        <item
+            android:id="@+id/nav_firme"
+            android:title="Firme partenere" />
+        <item
+            android:id="@+id/nav_detalii"
+            android:title="Detalii" />
+    </group>
+
+</menu>

@@ -16,9 +16,12 @@ import java.util.List;
 
 public class ProdusAPI {
     //TODO modifica asta cand ai host
-    private static final String APIHOST = "http://79.118.201.219:4567/";
-    private static final Type listtring = new TypeToken<List<String>>() {
-    }.getType();
+    private static final String APIHOST = "http://teamp.go.ro:4567/api/";
+    private static final Type listtring = new TypeToken<List<String>>(){}.getType();
+    private static final Type listprodus = new TypeToken<List<Produs>>(){}.getType();
+    private static final Type listmagazin = new TypeToken<List<Shop>>(){}.getType();
+    private static final Type listfirma = new TypeToken<List<Firma>>(){}.getType();
+    private static final Type listcateg = new TypeToken<List<Categorie>>(){}.getType();
     Gson gson;
 
     public ProdusAPI() {
@@ -29,14 +32,39 @@ public class ProdusAPI {
         return gson.fromJson(readUrl(APIHOST + "search/" + barcode), DetaliiProdus.class);
     }
 
-    public List<String> getFirme(String oras) throws IOException {
+    public List<Categorie> getCategorii() throws IOException {
+        return gson.fromJson(readUrl(APIHOST + "categorii"),
+                listcateg);
+    }
+
+    public List<Firma> getFirme(String oras) throws IOException {
         return gson.fromJson(readUrl(APIHOST + "firme/" + oras),
-                listtring);
+                listfirma);
+    }
+
+    public List<Firma> getFirme() throws IOException {
+        return gson.fromJson(readUrl(APIHOST + "firme"),
+                listfirma);
     }
 
     public List<Shop> getShops(String oras) throws IOException {
         return gson.fromJson(readUrl(APIHOST + "magazine/" + oras),
-                listtring);
+                listmagazin);
+    }
+
+    public List<Shop> getShops() throws IOException {
+        return gson.fromJson(readUrl(APIHOST + "magazine"),
+                listmagazin);
+    }
+
+    public List<Produs> getProduse() throws IOException {
+        return gson.fromJson(readUrl(APIHOST + "produse"),
+                listprodus);
+    }
+
+    public List<Produs> getProduse(String categorie) throws IOException {
+        return gson.fromJson(readUrl(APIHOST + "produse/"+categorie),
+                listprodus);
     }
 
     public ResultList getStrazi(String oras, String firma) throws IOException {
@@ -46,6 +74,11 @@ public class ProdusAPI {
 
     public List<String> getOrase() throws IOException {
         return gson.fromJson(readUrl(APIHOST + "orase"),
+                listtring);
+    }
+
+    public List<String> getOrase(String firma) throws IOException {
+        return gson.fromJson(readUrl(APIHOST + "orase/" + firma),
                 listtring);
     }
 
