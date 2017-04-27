@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import mp.adfaber.pricescan.fragmente.DetaliiFragment;
 import mp.adfaber.pricescan.fragmente.FirmeFragment;
@@ -114,9 +113,6 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(MainActivity.this,ListActivity.class);
                 intent.putExtra("cod",data.getStringExtra("cod"));
                 startActivity(intent);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(this, "Nu merge scannerul", Toast.LENGTH_LONG).show();
             }
         }
     }

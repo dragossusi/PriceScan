@@ -14,8 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import mp.adfaber.pricescan.wrapper.Firma;
 import mp.adfaber.pricescan.wrapper.ProdusAPI;
 
 public class AddProductActivity extends AppCompatActivity {
@@ -27,7 +29,7 @@ public class AddProductActivity extends AppCompatActivity {
     Button btnAdauga;
     ProdusAPI api;
     List<String> orase;
-    List<String> firme;
+    List<String> numefirme;
     List<String> strazi;
     String [] details;
     LinearLayout linearLayout;
@@ -46,6 +48,7 @@ public class AddProductActivity extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.linearstrada);
         api = new ProdusAPI();
 
+        numefirme = new ArrayList<>();
         details = new String[2];
 
         new GetOrase().execute(null,null,null);
@@ -131,7 +134,10 @@ public class AddProductActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... oras) {
             try{
-                firme = api.getFirme(oras[0]);
+                List<Firma> firme = api.getFirme(oras[0]);
+                numefirme.clear();
+                for(Firma f : firme)
+                    numefirme.add(f.nume);
                 success = true;
             } catch (Exception e) {
                 System.err.println(e);
@@ -142,7 +148,7 @@ public class AddProductActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             if(success) {
-                spinnerMagazin.setAdapter(new ArrayAdapter(AddProductActivity.this,android.R.layout.simple_spinner_dropdown_item,firme));
+                spinnerMagazin.setAdapter(new ArrayAdapter(AddProductActivity.this,android.R.layout.simple_spinner_dropdown_item,numefirme));
             } else {
                 Toast.makeText(AddProductActivity.this,"Are o eroare cand ia firmele",Toast.LENGTH_SHORT).show();
             }
