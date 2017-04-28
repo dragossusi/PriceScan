@@ -1,13 +1,19 @@
 package mp.adfaber.pricescan.wrapper;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
+import org.apache.commons.io.IOUtil;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -16,7 +22,7 @@ import java.util.List;
 
 public class ProdusAPI {
     //TODO modifica asta cand ai host
-    private static final String APIHOST = "http://teamp.go.ro:4567/api/";
+    public static final String APIHOST = "http://teamp.go.ro:4567/api/";
     private static final Type listtring = new TypeToken<List<String>>(){}.getType();
     private static final Type listprodus = new TypeToken<List<Produs>>(){}.getType();
     private static final Type listmagazin = new TypeToken<List<Shop>>(){}.getType();
@@ -130,24 +136,35 @@ public class ProdusAPI {
         }
     }
 
-    ///utile
-    private static String readUrl(String urlString) throws IOException {
-        System.out.println("Requesting " + urlString.replace(" ", "%20"));
-        BufferedReader reader = null;
-        try {
-            URL url = new URL(urlString.replace(" ", "%20"));
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            StringBuffer buffer = new StringBuffer();
-            int read;
-            char[] chars = new char[1024];
-            while ((read = reader.read(chars)) != -1)
-                buffer.append(chars, 0, read);
+    public Result createAdmin(String username,String parola, String nume,String email, String id_magazin) throws Exception {
+        return gson.fromJson(readUrl(String.format(APIHOST+"insert/admin/%s/%s/%s/%s/%s",username,sha1(parola),nume,email,id_magazin)),Result.class);
+    }
 
-            return buffer.toString();
-        } finally {
-            if (reader != null)
-                reader.close();
+    public ResultAdmin loginAdmin(String username, String parola) throws Exception {
+        return gson.fromJson(readUrl(String.format(APIHOST+"connect/%s/%s",username,parola)),ResultAdmin.class);
+    }
+
+    ///utile
+
+    @NonNull
+    public static String sha1(String input) throws NoSuchAlgorithmException {
+        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
         }
+        return sb.toString();
+    }
+
+    private static String readUrl(String urlString) throws IOException {
+        urlString = urlString.replace(" ","%20");
+        System.out.println("Requesting "+urlString);
+        URLConnection con = new URL(urlString).openConnection();
+        con.setConnectTimeout(10*1000);
+        InputStream in = con.getInputStream();
+        String res = IOUtil.toString(in);
+        return res;
     }
 
     public class Result {
@@ -157,6 +174,11 @@ public class ProdusAPI {
         public Result(boolean succes) {
             this.succes = succes;
         }
+    }
+
+    public class ResultAdmin {
+        public boolean succes;
+        public Admin admin;
     }
 
     public class ResultList {

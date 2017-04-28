@@ -33,6 +33,7 @@ public class FirmeFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         api = new ProdusAPI();
+        setHasOptionsMenu(false);
     }
 
     @Nullable
