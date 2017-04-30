@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ProdusAPI {
     //TODO modifica asta cand ai host
-    public static final String APIHOST = "http://teamp.go.ro:4567/api/";
+    public static String APIHOST = "http://teamp.go.ro:4567/api/";
     private static final Type listtring = new TypeToken<List<String>>(){}.getType();
     private static final Type listprodus = new TypeToken<List<Produs>>(){}.getType();
     private static final Type listmagazin = new TypeToken<List<Shop>>(){}.getType();
@@ -32,6 +32,10 @@ public class ProdusAPI {
 
     public ProdusAPI() {
         gson = new Gson();
+    }
+
+    public static void setAPIHOST(String APIHOST) {
+        ProdusAPI.APIHOST = APIHOST;
     }
 
     public DetaliiProdus searchProduct(String barcode) throws IOException {

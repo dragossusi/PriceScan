@@ -44,6 +44,8 @@ public class ProduseFragment extends Fragment {
     String categorie = "";
     List<String> numecategorii = null;
     AlertDialog alertDialog;
+    GetProduse taskproduse;
+    GetCategorii taskcategorii;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,18 +59,19 @@ public class ProduseFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         categorie = spinner.getSelectedItem().toString();
-                        new GetProduse().execute(null,null,null);
+                        taskproduse.execute(null,null,null);
                     }
                 })
                 .setNegativeButton("Sterge", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         categorie = "";
-                        new GetProduse().execute(null,null,null);
+                        taskproduse.execute(null,null,null);
                     }
                 });
         alertDialog = builder.create();
-        new GetCategorii().execute(null,null,null);
+        taskcategorii = new GetCategorii();
+        taskcategorii.execute(null,null,null);
         setHasOptionsMenu(true);
     }
 
@@ -84,8 +87,8 @@ public class ProduseFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        new GetProduse().execute(null, null, null);
+        taskproduse = new GetProduse();
+        taskproduse.execute(null, null, null);
 
         return rootView;
     }
@@ -97,11 +100,20 @@ public class ProduseFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if(taskproduse != null && taskproduse.getStatus() == AsyncTask.Status.RUNNING)
+            taskproduse.cancel(true);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_filter) {
             if(numecategorii!=null)
                 alertDialog.show();
+            else
+                Toast.makeText(getActivity(),"Se incarca categoriile",Toast.LENGTH_SHORT);
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -22,13 +22,21 @@ import mp.adfaber.pricescan.wrapper.ProdusAPI;
 
 public class DetaliiFragment extends Fragment {
     AppCompatImageView imageView;
+    GetStatus task;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detalii, container, false);
         imageView = (AppCompatImageView) rootView.findViewById(R.id.isUp);
-        new GetStatus().execute(null,null,null);
+        task = new GetStatus();
+        task.execute(null,null,null);
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        task.cancel(true);
     }
 
     protected class GetStatus extends AsyncTask<Void,Void,Void> {
